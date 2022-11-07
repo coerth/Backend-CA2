@@ -8,17 +8,23 @@ import utils.HttpUtils;
 
 import java.util.concurrent.Callable;
 
-public class DrinkGetter implements Callable {
+public class DrinkGetter implements Callable<DrinkDTO[]> {
 
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    int id = 0;
+    /*int id = 0;
     public DrinkGetter(int id) {
         this.id = id;
+    }*/
+
+    public DrinkGetter() {
     }
 
     @Override
-    public Object call() throws Exception {
-        return gson.fromJson(HttpUtils.fetchData("https://api.punkapi.com/v2/beers/"+id), DrinkDTO.class);
+    public DrinkDTO[] call() throws Exception {
+
+        String drink = HttpUtils.fetchData("https://api.punkapi.com/v2/beers/random");
+
+        return gson.fromJson(drink, DrinkDTO[].class);
     }
 }

@@ -7,17 +7,22 @@ import utils.HttpUtils;
 
 import java.util.concurrent.Callable;
 
-public class FoodGetter implements Callable {
+public class FoodGetter implements Callable<FoodDTO> {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    int id = 0;
+    /*int id = 0;
     public FoodGetter(int id) {
         this.id = id;
+    }*/
+
+    public FoodGetter() {
     }
 
     @Override
-    public Object call() throws Exception {
+    public FoodDTO call() throws Exception {
 
-        return gson.fromJson(HttpUtils.fetchData("www.themealdb.com/api/json/v1/1/lookup.php?i="+id), FoodDTO.class);
+        String food = HttpUtils.fetchData("https://www.themealdb.com/api/json/v1/1/random.php");
+
+        return gson.fromJson(food, FoodDTO.class);
 
     }
 }

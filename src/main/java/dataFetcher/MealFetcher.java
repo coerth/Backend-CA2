@@ -1,20 +1,35 @@
 package dataFetcher;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import dtos.CombinedFoodAndDrinkDTO;
 import dtos.DrinkDTO;
-import dtos.FoodDTO;
-import dtos.RestaurantDto;
-import utils.HttpUtils;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.*;
+public class MealFetcher {
 
-public class MenuFetcher {
+
+    public CombinedFoodAndDrinkDTO combinedMeal() throws Exception {
+
+        DrinkGetter drinkGetter = new DrinkGetter();
+        FoodGetter foodGetter = new FoodGetter();
+        DrinkDTO[] drinkDTOS = drinkGetter.call();
+
+        try {
+            CombinedFoodAndDrinkDTO combinedFoodAndDrinkDTO = new CombinedFoodAndDrinkDTO(foodGetter.call(), drinkDTOS[0]);
+            return combinedFoodAndDrinkDTO;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public static void main(String[] args) throws Exception {
+        MealFetcher mealFetcher = new MealFetcher();
+
+        System.out.println(mealFetcher.combinedMeal());
+
+
+    }
+
+
 
 
    /* Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -33,7 +48,7 @@ public class MenuFetcher {
         return combinedJson;
     }*/
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         MenuFetcher menuFetcher = new MenuFetcher();
        FoodDTO foodDTO = gson.fromJson(menuFetcher.getFoodDTOS(),FoodDTO.class);
@@ -74,6 +89,6 @@ public class MenuFetcher {
             }
         }
         return drinkDTOS;
-    }
+    }*/
 
 }
