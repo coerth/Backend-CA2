@@ -5,6 +5,10 @@ import dtos.CombinedFoodAndDrinkDTO;
 import dtos.DrinkDTO;
 import dtos.FoodDTO;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 public class MealFacade {
     private static MealFacade instance;
     String drinkUrl = "https://api.punkapi.com/v2/beers/random";
@@ -33,10 +37,15 @@ public class MealFacade {
     }
 
     public CombinedFoodAndDrinkDTO combinedMeal () throws Exception {
-        DrinkDTO drinkDTO = getDrink();
-        FoodDTO foodDTO = getFood();
+        ExecutorService executorService = Executors.newCachedThreadPool();
+        DataFetcher drinkFetcher = new DataFetcher<DrinkDTO[]>(drinkUrl, DrinkDTO[].class);
+        DataFetcher foodFetcher = new DataFetcher<FoodDTO>(foodUrl, FoodDTO.class);
 
-        CombinedFoodAndDrinkDTO combinedFoodAndDrinkDTO = new CombinedFoodAndDrinkDTO(foodDTO, drinkDTO);
+
+        Future<DrinkDTO[]> drinkDTOFuture = executorService.submit(drinkFetcher);
+        Future<FoodDTO> foodDTOFuture = executorService.submit(foodFetcher);
+
+        CombinedFoodAndDrinkDTO combinedFoodAndDrinkDTO = new CombinedFoodAndDrinkDTO(foodDTOFuture.get(), drinkDTOFuture.get()[0]);
 
         return combinedFoodAndDrinkDTO;
     }
