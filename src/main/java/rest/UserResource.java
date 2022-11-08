@@ -19,20 +19,6 @@ public class UserResource {
     @Context
     SecurityContext securityContext;
 
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("random")
-    public Response getRandom() {
-        MealFetcher mealFetcher = new MealFetcher();
-        try {
-            return Response.ok().entity(gson.toJson(mealFetcher.combinedMeal())).build();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @RolesAllowed("user")
