@@ -25,8 +25,8 @@ import utils.EMF_Creator;
 //Disabled
 public class LoginEndpointTest {
 
-    private static final int SERVER_PORT = 7777;
-    private static final String SERVER_URL = "http://localhost/api";
+    private static final int SERVER_PORT = 8080;
+    private static final String SERVER_URL = "http://localhost:8080/devops_starter_war_exploded/api";
 
     static final URI BASE_URI = UriBuilder.fromUri(SERVER_URL).port(SERVER_PORT).build();
     private static HttpServer httpServer;
@@ -71,11 +71,11 @@ public class LoginEndpointTest {
 
             Role userRole = new Role("user");
             Role adminRole = new Role("admin");
-            User user = new User("user", "test");
+            User user = new User("user", "test123");
             user.addRole(userRole);
-            User admin = new User("admin", "test");
+            User admin = new User("admin", "test123");
             admin.addRole(adminRole);
-            User both = new User("user_admin", "test");
+            User both = new User("user_admin", "test123");
             both.addRole(userRole);
             both.addRole(adminRole);
             em.persist(userRole);
@@ -103,7 +103,7 @@ public class LoginEndpointTest {
                 .when().post("/login")
                 .then()
                 .extract().path("token");
-        //System.out.println("TOKEN ---> " + securityToken);
+        System.out.println("TOKEN ---> " + securityToken);
     }
 
     private void logOut() {
@@ -112,89 +112,79 @@ public class LoginEndpointTest {
 
     @Test
     public void serverIsRunning() {
-        given().when().get("/info").then().statusCode(200);
-    }
-
-    @Test
-    public void testRestNoAuthenticationRequired() {
-        given()
-                .contentType("application/json")
-                .when()
-                .get("/info/").then()
-                .statusCode(200)
-                .body("msg", equalTo("Hello anonymous"));
+        given().when().get("/meal/random").then().statusCode(200);
     }
 
     @Test
     public void testRestForAdmin() {
-        login("admin", "test");
+        login("admin", "test123");
         given()
                 .contentType("application/json")
                 .accept(ContentType.JSON)
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/admin").then()
+                .get("/admin").then()
                 .statusCode(200)
-                .body("msg", equalTo("Hello to (admin) User: admin"));
+                .body("msg", equalTo("Hello: admin this is the admin page"));
     }
 
     @Test
     public void testRestForUser() {
-        login("user", "test");
+        login("user", "test123");
         given()
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then()
+                .get("/user").then()
                 .statusCode(200)
-                .body("msg", equalTo("Hello to User: user"));
+                .body("msg", equalTo("Hello: user this is your profile page"));
     }
 
     @Test
     public void testAutorizedUserCannotAccesAdminPage() {
-        login("user", "test");
+        login("user", "test123");
         given()
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/admin").then() //Call Admin endpoint as user
+                .get("/admin").then() //Call Admin endpoint as user
                 .statusCode(401);
     }
 
     @Test
     public void testAutorizedAdminCannotAccesUserPage() {
-        login("admin", "test");
+        login("admin", "test123");
         given()
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then() //Call User endpoint as Admin
+                .get("/user").then() //Call User endpoint as Admin
                 .statusCode(401);
     }
 
     @Test
     public void testRestForMultiRole1() {
-        login("user_admin", "test");
+        login("user_admin", "test123");
         given()
                 .contentType("application/json")
                 .accept(ContentType.JSON)
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/admin").then()
+                .get("/admin").then()
                 .statusCode(200)
-                .body("msg", equalTo("Hello to (admin) User: user_admin"));
+                .body("msg", equalTo("Hello: user_admin this is the admin page"));
     }
 
     @Test
     public void testRestForMultiRole2() {
-        login("user_admin", "test");
+        login("user_admin", "test123");
         given()
                 .contentType("application/json")
                 .header("x-access-token", securityToken)
                 .when()
-                .get("/info/user").then()
+                .get("/user").then()
                 .statusCode(200)
-                .body("msg", equalTo("Hello to User: user_admin"));
+                .body("msg", equalTo("Hello: user_admin this is your profile page"));
     }
 
     @Test
@@ -203,7 +193,7 @@ public class LoginEndpointTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/info/user").then()
+                .get("/user").then()
                 .statusCode(403)
                 .body("code", equalTo(403))
                 .body("message", equalTo("Not authenticated - do login"));
@@ -215,7 +205,7 @@ public class LoginEndpointTest {
         given()
                 .contentType("application/json")
                 .when()
-                .get("/info/user").then()
+                .get("/user").then()
                 .statusCode(403)
                 .body("code", equalTo(403))
                 .body("message", equalTo("Not authenticated - do login"));
