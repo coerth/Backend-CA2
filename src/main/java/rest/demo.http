@@ -8,9 +8,24 @@ Content-Type: application/json
   "username": "admin",
   "password": "test123"
 }
+
 ###
-GET http://localhost:8080/devops_starter_war_exploded/api/info/admin
-x-access-token:eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjoiYWRtaW4iLCJleHAiOjE2NjcyOTYyMTAsImlhdCI6MTY2NzI5NDQxMCwiaXNzdWVyIjoic2VtZXN0ZXJzdGFydGNvZGUtZGF0MyIsInVzZXJuYW1lIjoiYWRtaW4ifQ.dlsMNiQc_OYU2HCa-WMzNImQ3qoNy2CGXEWAbXBQM3g"
+GET http://localhost:8080/devops_starter_war_exploded/api/admin
+x-access-token:eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjoiYWRtaW4iLCJleHAiOjE2Njc4OTc3NTUsImlhdCI6MTY2Nzg5NTk1NSwiaXNzdWVyIjoic2VtZXN0ZXJzdGFydGNvZGUtZGF0MyIsInVzZXJuYW1lIjoiYWRtaW4ifQ.yXsKATUNs6oZlhGGRZCFRUjJQ-lsSRvLuhYgECATa5Y
+
+###
+POST http://localhost:8080/devops_starter_war_exploded/api/login
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "test123"
+}
+
+###
+GET http://localhost:8080/devops_starter_war_exploded/api/user
+x-Access-Token:eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIiwicm9sZXMiOiJ1c2VyIiwiZXhwIjoxNjY3ODk4MDA0LCJpYXQiOjE2Njc4OTYyMDQsImlzc3VlciI6InNlbWVzdGVyc3RhcnRjb2RlLWRhdDMiLCJ1c2VybmFtZSI6InVzZXIifQ.6irrkZMzEQy6YvoL-Cnm_T6YG1Wmy31WZyYW-JYMAfg
+
 
 ###
 GET http://localhost:8080/devops_starter_war_exploded/api/info/user
