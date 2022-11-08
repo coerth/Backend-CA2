@@ -2,7 +2,7 @@ package rest;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dataFetcher.MealFetcher;
+import facades.MealFacade;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -25,9 +25,9 @@ public class MealResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Path("random")
     public Response getRandom() {
-        MealFetcher mealFetcher = new MealFetcher();
+        MealFacade mealFacade = new MealFacade();
         try {
-            return Response.ok().entity(gson.toJson(mealFetcher.combinedMeal())).build();
+            return Response.ok().entity(gson.toJson(mealFacade.combinedMeal())).build();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
