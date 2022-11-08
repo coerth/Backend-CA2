@@ -50,8 +50,4 @@ public class MealFacade {
         return combinedFoodAndDrinkDTO;
     }
 
-    public static void main(String[] args) throws Exception {
-        MealFacade  instance = getInstance();
-        System.out.println(instance.combinedMeal());
-    }
 }
