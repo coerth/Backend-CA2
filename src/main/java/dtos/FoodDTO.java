@@ -8,7 +8,6 @@ public class FoodDTO {
     public FoodDTO(meal[] meals) {
         this.meals = meals;
     }
-
     public meal[] getMeals() {
         return meals;
     }
