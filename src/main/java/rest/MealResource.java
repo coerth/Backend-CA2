@@ -33,4 +33,28 @@ public class MealResource {
         }
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("food")
+    public Response getFood() {
+        MealFacade mealFacade = new MealFacade();
+        try {
+            return Response.ok().entity(gson.toJson(mealFacade.getFood())).build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("drink")
+    public Response getDrink() {
+        MealFacade mealFacade = new MealFacade();
+        try {
+            return Response.ok().entity(gson.toJson(mealFacade.getDrink())).build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
